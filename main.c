@@ -1,5 +1,6 @@
 #include "sp.h"
 #include <stdio.h>
+#include <string.h>
 
 void de( void* arr )
 {
@@ -17,6 +18,17 @@ sp_t foo( sp_t ptr )
     return ptr;
 }
 
+sp_t test()
+{
+    sp_make( temp, sizeof (char) * 13, de );
+
+    char* x = sp_ptr(temp);
+    memcpy( x, "foo", 4 );
+    strcpy( x, "foo" );
+
+    return sp_return(temp);
+}
+
 int main( void )
 {
     sp_make( arr, sizeof (int) * 10, de );
@@ -30,6 +42,9 @@ int main( void )
         printf( "%-3d", temp[i] );   
     }
     puts("");
+    
+    sp_recv(xd) = test();
+    puts( sp_ptr(xd) );
 
     return 0;
 }

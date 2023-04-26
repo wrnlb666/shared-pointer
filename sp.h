@@ -54,13 +54,13 @@ void sp_cleanup( sp_t* sp );
 
 #undef sp_ptr
 #define sp_ptr( src )                                   \
-( src->ptr )
+src->ptr
 
 
 #undef sp_make
 #define sp_make( name, size, destructor )               \
 __attribute__(( cleanup( sp_cleanup ) ))                \
-sp_t name = malloc( sizeof (sp_t) );                    \
+sp_t name = malloc( sizeof ( struct sp_t ) );           \
 name->ptr   = malloc( size );                           \
 name->des   = destructor;                               \
 name->ref   = 1
@@ -75,7 +75,7 @@ dest->ref++
 
 #undef sp_return
 #define sp_return( src )                                \
-( src->ref++, src )
+( ++src->ref, src )
 
 
 #undef sp_recv
