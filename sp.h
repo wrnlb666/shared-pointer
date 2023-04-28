@@ -19,7 +19,7 @@ typedef struct sp_t *sp_t;
 // name should not be declared before
 // size should be in bytes
 // destructor is a function that will be used to free the object
-#define sp_make( /* undeclared sp_t */ name, /* size_t */ size, /* void (*)(void*) */ destructor )
+#define sp_make( /* undeclared sp_t */ name, /* void (*)(void*) */ destructor )
 
 // copy constructor? When build a new shared pointer upon existing pointer, use `sp_copy`
 // The only exception is when build a new shared pointer upon the returned `sp_t` from a function returned by `sp_return`
@@ -58,10 +58,10 @@ src->ptr
 
 
 #undef sp_make
-#define sp_make( name, size, destructor )               \
+#define sp_make( name, destructor )                     \
 __attribute__(( cleanup( sp_cleanup ) ))                \
-sp_t name = malloc( sizeof ( struct sp_t ) );           \
-name->ptr   = malloc( size );                           \
+sp_t name   = malloc( sizeof ( struct sp_t ) );         \
+name->ptr   = NULL;                                     \
 name->des   = destructor;                               \
 name->ref   = 1
 

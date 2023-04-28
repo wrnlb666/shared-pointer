@@ -2,11 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-void de( void* arr )
-{
-    free( arr );
-}
-
 sp_t foo( sp_t ptr )
 {
     int* temp = sp_ptr( ptr );
@@ -20,18 +15,18 @@ sp_t foo( sp_t ptr )
 
 sp_t test()
 {
-    sp_make( temp, sizeof (char) * 13, de );
+    sp_make( temp, free );
+    sp_ptr(temp) = malloc( 12 );
 
-    char* x = sp_ptr(temp);
-    memcpy( x, "foo", 4 );
-    strcpy( x, "foo" );
+    strcpy( sp_ptr(temp), "Hello World" );
 
     return sp_return(temp);
 }
 
 int main( void )
 {
-    sp_make( arr, sizeof (int) * 10, de );
+    sp_make( arr, free );
+    sp_ptr(arr) = malloc( sizeof(10 ) );
 
     sp_copy( xx, foo(arr));
 
